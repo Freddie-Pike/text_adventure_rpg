@@ -1,26 +1,32 @@
+import csv
+
 import class_character_template
 
+def print_character_class_details(character_class, body):
+  top_spacer = ""
+  bottom_spacer = ""
+  
+  for x in range(len(character_class) + 2):
+    top_spacer += "_" 
+    bottom_spacer += "-" 
+  print("  " + top_spacer + "\n**|" + character_class.upper() + "|**\n  " + bottom_spacer + "\n" + body)
 
 def character_summary(class_type):
-    
-    template_dictionary = {"knight":"  ________\n**|KNIGHT|**\n  --------"\
-                           "\nHigh health, attack, and defence with reasonable persuasion and intelligence;"\
-                           "Knights are well rounded characters"\
-                           "\nAlthough, be careful retreating from battle and don't expect to sneak by many enemys",
-                           
-                           "archer":"  ________\n**|ARCHER|**\n  --------",
-                           "minstrel":"  __________\n**|MINSTREL|**\n  ----------",
-                           "theif":"  ________\n**|THEIF|**\n  --------",
-                           "mage":"  _______\n**|MAGE|**\n  -------",
-                           }
-    
-    while(True):
-        if class_type in template_dictionary :
-            print(template_dictionary[class_type])
-            break
-        
-        else:
-            print("invalid")
+    with open('character_classes_descriptions.csv', mode='r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        class_info = None
+
+        for row in csv_reader:
+          if row["class"] == class_type:
+            class_info = row
+
+    if class_info is None:
+      print("Invalid")
+    else:
+      print_character_class_details(class_info["class"], class_info["description"])
+
+
+character_summary("archer")
             
             
         
